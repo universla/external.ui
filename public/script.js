@@ -1,7 +1,7 @@
 
 // Configuración de la API (reemplaza con tu URL real)
-const API_BASE_URL = 'https://TU-DOMINIO-DEL-BOT/api'; // Ej: https://tu-bot.vercel.app/api
-const BOT_CLIENT_ID = 'TU_BOT_ID'; // Reemplaza con el ID real de tu bot
+const API_BASE_URL = 'https://external-ui-qtzh.vercel.app/#bots'; // Ej: https://tu-bot.vercel.app/api
+const BOT_CLIENT_ID = '1320546103346728991'; // Reemplaza con el ID real de tu bot
 const DISCORD_INVITE = 'TU_INVITACION'; // Reemplaza con tu invitación real
 
 // Datos simulados (en producción se conectarían con tu API real)

@@ -1,14 +1,17 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>External.ui - Directorio de Bots</title>
+    <title>External.ui - Directorio de Bots de Discord</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>">
+    <meta name="description" content="Encuentra los mejores bots de Discord. Descubre, vota y añade bots increíbles a tu servidor.">
+    <meta name="keywords" content="Discord, bots, directorio, top.gg, External.ui">
 </head>
 <body>
-    <!-- Header -->
+    <!-- Header mejorado -->
     <header class="header">
         <div class="container">
             <div class="logo-section">
@@ -22,17 +25,25 @@
             <nav class="nav">
                 <a href="/" class="nav-link active">Home</a>
                 <a href="#bots" class="nav-link">Bots</a>
-                <a href="#categories" class="nav-link">Categories</a>
-                <a href="#add" class="nav-link btn-primary">Add Bot</a>
+                <a href="#categories" class="nav-link">Categorías</a>
+                <a href="#leaderboard" class="nav-link">Top Bots</a>
+                <a href="#add" class="nav-link btn-primary">Añadir Bot</a>
             </nav>
+            
+            <div class="header-actions">
+                <div class="search-mini">
+                    <input type="text" placeholder="Buscar..." id="miniSearch">
+                </div>
+                <a href="#login" class="nav-link">Login</a>
+            </div>
         </div>
     </header>
 
-    <!-- Hero -->
+    <!-- Hero section mejorada -->
     <section class="hero">
         <div class="container">
             <div class="hero-content">
-                <h1 class="animated-text">Find the perfect <span class="highlight">Discord bot</span></h1>
+                <h1 class="hero-title">Find the perfect <span class="highlight">Discord bot</span></h1>
                 <p class="hero-subtitle">The best place to discover, vote, and manage Discord bots</p>
                 
                 <div class="search-box">
@@ -42,42 +53,113 @@
                         class="search-input"
                         id="searchInput"
                     />
+                    <select class="category-select" id="categorySelect">
+                        <option value="">All Categories</option>
+                        <option value="utility">🔧 Utility</option>
+                        <option value="music">🎵 Music</option>
+                        <option value="moderation">🛡️ Moderation</option>
+                        <option value="games">🎮 Games</option>
+                        <option value="fun">🎉 Fun</option>
+                    </select>
                     <button class="search-button" onclick="searchBots()">🔍 Search</button>
+                </div>
+                
+                <div class="popular-tags">
+                    <span>Popular tags:</span>
+                    <div class="tags-container">
+                        <span class="tag-chip" onclick="filterByTag('moderation')">moderation</span>
+                        <span class="tag-chip" onclick="filterByTag('music')">music</span>
+                        <span class="tag-chip" onclick="filterByTag('fun')">fun</span>
+                        <span class="tag-chip" onclick="filterByTag('utility')">utility</span>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Stats -->
-    <section class="stats-widget">
+    <!-- Estadísticas en tiempo real -->
+    <section class="stats-section">
         <div class="container">
             <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number" id="totalBots">14,520+</div>
+                <div class="stat-card">
+                    <div class="stat-number">14,520+</div>
                     <div class="stat-label">Bots</div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number" id="totalVotes">8,900+</div>
+                <div class="stat-card">
+                    <div class="stat-number">8,900+</div>
                     <div class="stat-label">Total Votes</div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number" id="activeServers">250,000+</div>
+                <div class="stat-card">
+                    <div class="stat-number">250,000+</div>
                     <div class="stat-label">Servers</div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number" id="activeUsers">1,200,000+</div>
+                <div class="stat-card">
+                    <div class="stat-number">1,200,000+</div>
                     <div class="stat-label">Users</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Featured Bots -->
+    <!-- Sección de categorías -->
+    <section class="categories-section">
+        <div class="container">
+            <h2 class="section-title">📚 Browse by Category</h2>
+            <div class="categories-grid">
+                <div class="category-card" onclick="filterByCategory('utility')">
+                    <div class="category-icon">🔧</div>
+                    <div class="category-name">Utility</div>
+                    <div class="category-count">340 bots</div>
+                </div>
+                <div class="category-card" onclick="filterByCategory('music')">
+                    <div class="category-icon">🎵</div>
+                    <div class="category-name">Music</div>
+                    <div class="category-count">180 bots</div>
+                </div>
+                <div class="category-card" onclick="filterByCategory('moderation')">
+                    <div class="category-icon">🛡️</div>
+                    <div class="category-name">Moderation</div>
+                    <div class="category-count">150 bots</div>
+                </div>
+                <div class="category-card" onclick="filterByCategory('games')">
+                    <div class="category-icon">🎮</div>
+                    <div class="category-name">Games</div>
+                    <div class="category-count">210 bots</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bots destacados -->
     <section class="featured-section">
         <div class="container">
-            <h2 class="section-title">⭐ Featured Bots</h2>
+            <div class="section-header">
+                <h2 class="section-title">⭐ Featured Bots</h2>
+                <div class="section-controls">
+                    <select id="sortSelect" onchange="sortBots()">
+                        <option value="votes">Sort by Votes</option>
+                        <option value="servers">Sort by Servers</option>
+                        <option value="name">Sort by Name</option>
+                    </select>
+                </div>
+            </div>
+            
             <div class="bots-grid" id="botsGrid">
-                <!-- Bots se cargarán aquí -->
+                <!-- Los bots se cargarán aquí -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>🚀 Want to add your bot?</h2>
+                <p>Join thousands of bot developers and showcase your creation to the world</p>
+                <div class="cta-buttons">
+                    <a href="#add" class="btn-primary">Add Your Bot</a>
+                    <a href="#docs" class="btn-secondary">Developer Docs</a>
+                </div>
             </div>
         </div>
     </section>
@@ -85,28 +167,38 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div class="footer-content">
+            <div class="footer-grid">
                 <div class="footer-section">
                     <h3>External.ui</h3>
                     <p>Advanced bot directory with real-time features</p>
+                    <div class="social-links">
+                        <a href="#twitter">🐦 Twitter</a>
+                        <a href="#discord">🎮 Discord</a>
+                        <a href="#github">💻 GitHub</a>
+                    </div>
                 </div>
+                
                 <div class="footer-section">
                     <h4>Resources</h4>
                     <a href="#api">API Documentation</a>
+                    <a href="#widgets">Widgets</a>
                     <a href="#docs">Developer Guide</a>
                 </div>
+                
                 <div class="footer-section">
                     <h4>Legal</h4>
                     <a href="#terms">Terms of Service</a>
                     <a href="#privacy">Privacy Policy</a>
+                    <a href="#cookies">Cookie Policy</a>
                 </div>
             </div>
+            
             <div class="footer-bottom">
-                <p>&copy; 2024 External.ui. All rights reserved.</p>
+                <p>&copy; 2024 External.ui. All rights reserved. | Made with ❤️ for Discord</p>
             </div>
         </div>
     </footer>
 
     <script src="script.js"></script>
 </body>
-  </html>
+</html>

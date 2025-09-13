@@ -2,7 +2,6 @@
 {
   "name": "external-ui",
   "version": "1.0.0",
-  "description": "Directorio de bots tipo top.gg",
   "scripts": {
     "dev": "serve public",
     "start": "serve public"

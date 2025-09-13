@@ -10,14 +10,14 @@
     <meta name="description" content="Encuentra los mejores bots de Discord. Descubre, vota y añade bots increíbles a tu servidor.">
 </head>
 <body>
-    <!-- Header con conexión al bot -->
+    <!-- Header con integración del bot -->
     <header class="header">
         <div class="container">
             <div class="logo-section">
                 <a href="/" class="logo-text">🤖 External.ui</a>
                 <div class="live-indicator" id="botStatus">
                     <span class="pulse"></span>
-                    <span id="statusText">Bot Offline</span>
+                    <span id="statusText">Conectando...</span>
                 </div>
             </div>
             
@@ -53,7 +53,7 @@
                 </div>
                 
                 <div class="cta-buttons-hero">
-                    <a href="https://discord.com/api/oauth2/authorize?client_id=TU_BOT_ID&permissions=8&scope=bot%20applications.commands" class="btn-primary">Añadir Bot a Discord</a>
+                    <a href="#" class="btn-primary" id="inviteBotButton">Añadir Bot a Discord</a>
                     <a href="#bots" class="btn-secondary">Explorar Bots</a>
                 </div>
             </div>
@@ -198,7 +198,7 @@
                 <h2>🚀 ¿Tienes un bot increíble?</h2>
                 <p>Añádelo a nuestro directorio y hazlo visible para miles de usuarios</p>
                 <div class="cta-buttons">
-                    <a href="https://discord.com/api/oauth2/authorize?client_id=TU_BOT_ID&permissions=8&scope=bot%20applications.commands" class="btn-primary">Añadir Bot</a>
+                    <a href="#" class="btn-primary" id="inviteBotButton2">Añadir Bot</a>
                     <a href="#commands" class="btn-secondary">Ver Comandos</a>
                 </div>
             </div>
@@ -213,8 +213,8 @@
                     <h3>External.ui</h3>
                     <p>Directorio de bots de Discord con integración directa</p>
                     <div class="social-links">
-                        <a href="https://discord.gg/TU_INVITACION">🎮 Discord</a>
-                        <a href="https://github.com/TU_USUARIO">💻 GitHub</a>
+                        <a href="#" id="discordLink">🎮 Discord</a>
+                        <a href="#" id="githubLink">💻 GitHub</a>
                     </div>
                 </div>
                 

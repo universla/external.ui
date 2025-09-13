@@ -8,70 +8,53 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>">
     <meta name="description" content="Encuentra los mejores bots de Discord. Descubre, vota y añade bots increíbles a tu servidor.">
-    <meta name="keywords" content="Discord, bots, directorio, top.gg, External.ui">
 </head>
 <body>
-    <!-- Header mejorado -->
+    <!-- Header con conexión al bot -->
     <header class="header">
         <div class="container">
             <div class="logo-section">
                 <a href="/" class="logo-text">🤖 External.ui</a>
-                <div class="live-indicator">
+                <div class="live-indicator" id="botStatus">
                     <span class="pulse"></span>
-                    LIVE
+                    <span id="statusText">Bot Offline</span>
                 </div>
             </div>
             
             <nav class="nav">
                 <a href="/" class="nav-link active">Home</a>
                 <a href="#bots" class="nav-link">Bots</a>
-                <a href="#categories" class="nav-link">Categorías</a>
-                <a href="#leaderboard" class="nav-link">Top Bots</a>
+                <a href="#commands" class="nav-link">Comandos</a>
                 <a href="#add" class="nav-link btn-primary">Añadir Bot</a>
             </nav>
-            
-            <div class="header-actions">
-                <div class="search-mini">
-                    <input type="text" placeholder="Buscar..." id="miniSearch">
-                </div>
-                <a href="#login" class="nav-link">Login</a>
-            </div>
         </div>
     </header>
 
-    <!-- Hero section mejorada -->
+    <!-- Hero con integración del bot -->
     <section class="hero">
         <div class="container">
             <div class="hero-content">
                 <h1 class="hero-title">Find the perfect <span class="highlight">Discord bot</span></h1>
-                <p class="hero-subtitle">The best place to discover, vote, and manage Discord bots</p>
+                <p class="hero-subtitle">The best place to discover, vote, and manage Discord bots<br>Powered by our own <strong>External Directory Bot</strong></p>
                 
-                <div class="search-box">
-                    <input 
-                        type="text" 
-                        placeholder="Search bots, commands, categories..." 
-                        class="search-input"
-                        id="searchInput"
-                    />
-                    <select class="category-select" id="categorySelect">
-                        <option value="">All Categories</option>
-                        <option value="utility">🔧 Utility</option>
-                        <option value="music">🎵 Music</option>
-                        <option value="moderation">🛡️ Moderation</option>
-                        <option value="games">🎮 Games</option>
-                        <option value="fun">🎉 Fun</option>
-                    </select>
-                    <button class="search-button" onclick="searchBots()">🔍 Search</button>
+                <div class="bot-features">
+                    <div class="feature-card">
+                        <h3> slash commands</h3>
+                        <p>Usa /addbot, /vote, /search y más</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🔗 Integración</h3>
+                        <p>Conectado directamente con Discord</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>⏱️ En tiempo real</h3>
+                        <p>Votos y estadísticas actualizadas</p>
+                    </div>
                 </div>
                 
-                <div class="popular-tags">
-                    <span>Popular tags:</span>
-                    <div class="tags-container">
-                        <span class="tag-chip" onclick="filterByTag('moderation')">moderation</span>
-                        <span class="tag-chip" onclick="filterByTag('music')">music</span>
-                        <span class="tag-chip" onclick="filterByTag('fun')">fun</span>
-                        <span class="tag-chip" onclick="filterByTag('utility')">utility</span>
-                    </div>
+                <div class="cta-buttons-hero">
+                    <a href="https://discord.com/api/oauth2/authorize?client_id=TU_BOT_ID&permissions=8&scope=bot%20applications.commands" class="btn-primary">Añadir Bot a Discord</a>
+                    <a href="#bots" class="btn-secondary">Explorar Bots</a>
                 </div>
             </div>
         </div>
@@ -82,49 +65,72 @@
         <div class="container">
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-number">14,520+</div>
-                    <div class="stat-label">Bots</div>
+                    <div class="stat-number" id="totalBots">0</div>
+                    <div class="stat-label">Bots Registrados</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">8,900+</div>
-                    <div class="stat-label">Total Votes</div>
+                    <div class="stat-number" id="totalVotes">0</div>
+                    <div class="stat-label">Votos Totales</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">250,000+</div>
-                    <div class="stat-label">Servers</div>
+                    <div class="stat-number" id="activeServers">0</div>
+                    <div class="stat-label">Servidores Activos</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">1,200,000+</div>
-                    <div class="stat-label">Users</div>
+                    <div class="stat-number" id="onlineUsers">0</div>
+                    <div class="stat-label">Usuarios Online</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Sección de categorías -->
-    <section class="categories-section">
+    <!-- Comandos del bot -->
+    <section class="commands-section">
         <div class="container">
-            <h2 class="section-title">📚 Browse by Category</h2>
-            <div class="categories-grid">
-                <div class="category-card" onclick="filterByCategory('utility')">
-                    <div class="category-icon">🔧</div>
-                    <div class="category-name">Utility</div>
-                    <div class="category-count">340 bots</div>
+            <h2 class="section-title"> slash Commands</h2>
+            <div class="commands-grid">
+                <div class="command-card">
+                    <div class="command-header">
+                        <span class="command-name">/addbot</span>
+                        <span class="command-category">Administración</span>
+                    </div>
+                    <p class="command-description">Añade un bot al directorio con descripción y categoría</p>
+                    <div class="command-usage">
+                        <code>/addbot bot_id:123456789012345678 descripcion:"Bot increíble"</code>
+                    </div>
                 </div>
-                <div class="category-card" onclick="filterByCategory('music')">
-                    <div class="category-icon">🎵</div>
-                    <div class="category-name">Music</div>
-                    <div class="category-count">180 bots</div>
+                
+                <div class="command-card">
+                    <div class="command-header">
+                        <span class="command-name">/vote</span>
+                        <span class="command-category">Interacción</span>
+                    </div>
+                    <p class="command-description">Vota por tu bot favorito y gana recompensas</p>
+                    <div class="command-usage">
+                        <code>/vote bot_id:123456789012345678</code>
+                    </div>
                 </div>
-                <div class="category-card" onclick="filterByCategory('moderation')">
-                    <div class="category-icon">🛡️</div>
-                    <div class="category-name">Moderation</div>
-                    <div class="category-count">150 bots</div>
+                
+                <div class="command-card">
+                    <div class="command-header">
+                        <span class="command-name">/search</span>
+                        <span class="command-category">Búsqueda</span>
+                    </div>
+                    <p class="command-description">Busca bots por nombre, categoría o tags</p>
+                    <div class="command-usage">
+                        <code>/search query:"musica"</code>
+                    </div>
                 </div>
-                <div class="category-card" onclick="filterByCategory('games')">
-                    <div class="category-icon">🎮</div>
-                    <div class="category-name">Games</div>
-                    <div class="category-count">210 bots</div>
+                
+                <div class="command-card">
+                    <div class="command-header">
+                        <span class="command-name">/top</span>
+                        <span class="command-category">Estadísticas</span>
+                    </div>
+                    <p class="command-description">Muestra los bots más votados del directorio</p>
+                    <div class="command-usage">
+                        <code>/top cantidad:10</code>
+                    </div>
                 </div>
             </div>
         </div>
@@ -134,12 +140,13 @@
     <section class="featured-section">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">⭐ Featured Bots</h2>
+                <h2 class="section-title">⭐ Bots Destacados</h2>
                 <div class="section-controls">
-                    <select id="sortSelect" onchange="sortBots()">
-                        <option value="votes">Sort by Votes</option>
-                        <option value="servers">Sort by Servers</option>
-                        <option value="name">Sort by Name</option>
+                    <select id="timeframeSelect" onchange="loadLeaderboard()">
+                        <option value="all">Todos los tiempos</option>
+                        <option value="daily">Hoy</option>
+                        <option value="weekly">Esta semana</option>
+                        <option value="monthly">Este mes</option>
                     </select>
                 </div>
             </div>
@@ -150,15 +157,49 @@
         </div>
     </section>
 
-    <!-- Call to Action -->
+    <!-- Sistema de votación interactiva -->
+    <section class="voting-section">
+        <div class="container">
+            <div class="voting-content">
+                <h2>🗳️ Sistema de Votación</h2>
+                <p>Vota por tus bots favoritos y ayuda a impulsar su visibilidad</p>
+                
+                <div class="voting-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Encuentra tu bot</h4>
+                            <p>Busca el bot que quieres votar</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Usa el comando</h4>
+                            <p>Escribe <code>/vote bot_id:ID_DEL_BOT</code> en Discord</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Gana recompensas</h4>
+                            <p>Recibe puntos y beneficios por votar</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action con bot -->
     <section class="cta-section">
         <div class="container">
             <div class="cta-content">
-                <h2>🚀 Want to add your bot?</h2>
-                <p>Join thousands of bot developers and showcase your creation to the world</p>
+                <h2>🚀 ¿Tienes un bot increíble?</h2>
+                <p>Añádelo a nuestro directorio y hazlo visible para miles de usuarios</p>
                 <div class="cta-buttons">
-                    <a href="#add" class="btn-primary">Add Your Bot</a>
-                    <a href="#docs" class="btn-secondary">Developer Docs</a>
+                    <a href="https://discord.com/api/oauth2/authorize?client_id=TU_BOT_ID&permissions=8&scope=bot%20applications.commands" class="btn-primary">Añadir Bot</a>
+                    <a href="#commands" class="btn-secondary">Ver Comandos</a>
                 </div>
             </div>
         </div>
@@ -170,16 +211,15 @@
             <div class="footer-grid">
                 <div class="footer-section">
                     <h3>External.ui</h3>
-                    <p>Advanced bot directory with real-time features</p>
+                    <p>Directorio de bots de Discord con integración directa</p>
                     <div class="social-links">
-                        <a href="#twitter">🐦 Twitter</a>
-                        <a href="#discord">🎮 Discord</a>
-                        <a href="#github">💻 GitHub</a>
+                        <a href="https://discord.gg/TU_INVITACION">🎮 Discord</a>
+                        <a href="https://github.com/TU_USUARIO">💻 GitHub</a>
                     </div>
                 </div>
                 
                 <div class="footer-section">
-                    <h4>Resources</h4>
+                    <h4>Recursos</h4>
                     <a href="#api">API Documentation</a>
                     <a href="#widgets">Widgets</a>
                     <a href="#docs">Developer Guide</a>
@@ -189,7 +229,6 @@
                     <h4>Legal</h4>
                     <a href="#terms">Terms of Service</a>
                     <a href="#privacy">Privacy Policy</a>
-                    <a href="#cookies">Cookie Policy</a>
                 </div>
             </div>
             

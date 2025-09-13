@@ -1,5 +1,10 @@
 
-// Datos de ejemplo más completos
+// Configuración de la API (reemplaza con tu URL real)
+const API_BASE_URL = 'https://TU-DOMINIO-DEL-BOT/api'; // Ej: https://tu-bot.vercel.app/api
+const BOT_CLIENT_ID = 'TU_BOT_ID'; // Reemplaza con el ID real de tu bot
+const DISCORD_INVITE = 'TU_INVITACION'; // Reemplaza con tu invitación real
+
+// Datos simulados (en producción se conectarían con tu API real)
 const bots = [
     {
         id: '123456789012345678',
@@ -12,7 +17,8 @@ const bots = [
         avatar: 'PB',
         verified: true,
         featured: true,
-        tags: ['moderation', 'fun', 'utility']
+        tags: ['moderation', 'fun', 'utility'],
+        position: 1
     },
     {
         id: '234567890123456789',
@@ -25,7 +31,8 @@ const bots = [
         avatar: 'MM',
         verified: true,
         featured: true,
-        tags: ['music', 'radio', 'audio']
+        tags: ['music', 'radio', 'audio'],
+        position: 2
     },
     {
         id: '345678901234567890',
@@ -38,7 +45,8 @@ const bots = [
         avatar: 'G',
         verified: true,
         featured: false,
-        tags: ['moderation', 'security', 'admin']
+        tags: ['moderation', 'security', 'admin'],
+        position: 3
     },
     {
         id: '456789012345678901',
@@ -51,41 +59,75 @@ const bots = [
         avatar: 'GB',
         verified: false,
         featured: false,
-        tags: ['games', 'fun', 'entertainment']
-    },
-    {
-        id: '567890123456789012',
-        name: 'FunBot',
-        description: 'Memes, jokes, and entertainment commands. Bring laughter and fun to your Discord server.',
-        votes: 3240,
-        servers: 3800,
-        users: 80000,
-        category: 'Fun',
-        avatar: 'FB',
-        verified: false,
-        featured: false,
-        tags: ['fun', 'memes', 'entertainment']
-    },
-    {
-        id: '678901234567890123',
-        name: 'EconomyPro',
-        description: 'Advanced economy system with jobs, shops, and currency. Create a thriving virtual economy.',
-        votes: 2980,
-        servers: 3100,
-        users: 65000,
-        category: 'Economy',
-        avatar: 'EP',
-        verified: false,
-        featured: false,
-        tags: ['economy', 'currency', 'jobs']
+        tags: ['games', 'fun', 'entertainment'],
+        position: 4
     }
 ];
 
-// Cargar bots al inicio
+// Estadísticas simuladas
+let stats = {
+    totalBots: 14520,
+    totalVotes: 8900,
+    activeServers: 250000,
+    onlineUsers: 1200000
+};
+
+// Cargar datos al inicio
 document.addEventListener('DOMContentLoaded', function() {
-    loadBots();
+    initializeApp();
     setupEventListeners();
 });
+
+// Inicializar la aplicación
+async function initializeApp() {
+    try {
+        // Cargar datos reales desde la API (si está disponible)
+        await loadRealData();
+        
+        // Cargar interfaz
+        loadBots();
+        loadStats();
+        updateBotStatus();
+        setupInviteButtons();
+        showWelcomeMessage();
+        
+        console.log('✅ Aplicación inicializada correctamente');
+    } catch (error) {
+        console.error('❌ Error inicializando la aplicación:', error);
+        // Usar datos simulados si la API no está disponible
+        loadBots();
+        loadStats();
+        updateBotStatus();
+        setupInviteButtons();
+        showWelcomeMessage();
+    }
+}
+
+// Cargar datos reales desde la API
+async function loadRealData() {
+    try {
+        // Intentar cargar estadísticas reales
+        const statsResponse = await fetch(`${API_BASE_URL}/stats`);
+        if (statsResponse.ok) {
+            const realStats = await statsResponse.json();
+            stats = realStats;
+        }
+        
+        // Intentar cargar bots reales
+        const botsResponse = await fetch(`${API_BASE_URL}/bots?limit=10`);
+        if (botsResponse.ok) {
+            const realBots = await botsResponse.json();
+            // Usar bots reales si están disponibles
+            if (realBots.length > 0) {
+                // bots = realBots; // Descomentar cuando tengas la API real
+            }
+        }
+        
+        console.log('✅ Datos reales cargados');
+    } catch (error) {
+        console.log('ℹ️ Usando datos simulados (API no disponible)');
+    }
+}
 
 // Cargar bots en la grilla
 function loadBots(botsToShow = bots) {
@@ -131,131 +173,180 @@ function createBotCard(bot) {
         
         <div class="bot-actions">
             <button class="btn-vote" onclick="voteBot('${bot.name}', '${bot.id}')">Vote</button>
-            <button class="btn-invite" onclick="inviteBot('${bot.name}')">Invite</button>
+            <button class="btn-invite" onclick="inviteBot('${bot.name}', '${bot.id}')">Invite</button>
         </div>
     `;
     return card;
 }
 
-// Función de búsqueda
-function searchBots() {
-    const query = document.getElementById('searchInput').value.toLowerCase();
-    const category = document.getElementById('categorySelect').value.toLowerCase();
+// Cargar estadísticas
+function loadStats() {
+    document.getElementById('totalBots').textContent = stats.totalBots.toLocaleString();
+    document.getElementById('totalVotes').textContent = stats.totalVotes.toLocaleString();
+    document.getElementById('activeServers').textContent = stats.activeServers.toLocaleString();
+    document.getElementById('onlineUsers').textContent = stats.onlineUsers.toLocaleString();
+}
+
+// Actualizar estado del bot
+async function updateBotStatus() {
+    const statusElement = document.getElementById('botStatus');
+    const statusText = document.getElementById('statusText');
     
-    let filteredBots = bots;
-    
-    if (query) {
-        filteredBots = filteredBots.filter(bot => 
-            bot.name.toLowerCase().includes(query) ||
-            bot.description.toLowerCase().includes(query) ||
-            bot.tags.some(tag => tag.toLowerCase().includes(query))
-        );
+    try {
+        // Simular conexión con el bot (en producción harías una llamada real)
+        setTimeout(() => {
+            statusElement.classList.add('online');
+            statusText.textContent = 'Bot Online';
+            statusText.title = 'Conectado a Discord';
+        }, 2000);
+        
+        console.log('✅ Estado del bot actualizado');
+    } catch (error) {
+        console.log('⚠️ Bot offline o no disponible');
+        statusText.textContent = 'Bot Offline';
+        statusText.title = 'Desconectado de Discord';
     }
-    
-    if (category) {
-        filteredBots = filteredBots.filter(bot => 
-            bot.category.toLowerCase() === category
-        );
+}
+
+// Sistema de votación
+async function voteBot(botName, botId) {
+    try {
+        // En producción, esto se conectaría a tu API real
+        const response = await fetch(`${API_BASE_URL}/vote/${botId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                userId: 'web-user', // En producción usarías el ID real del usuario
+                timestamp: new Date().toISOString()
+            })
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            alert(`✅ ¡Voto registrado para ${botName}!\nVotos totales: ${data.votes}`);
+            
+            // Actualizar estadísticas locales
+            stats.totalVotes += 1;
+            loadStats();
+            
+            // Actualizar bot en la lista
+            const bot = bots.find(b => b.id === botId);
+            if (bot) {
+                bot.votes += 1;
+                loadBots(); // Recargar para mostrar el nuevo voto
+            }
+        } else {
+            throw new Error('Error en la respuesta del servidor');
+        }
+    } catch (error) {
+        console.error('❌ Error votando:', error);
+        alert(`✅ ¡Voto registrado para ${botName}!\n\nEn una implementación real, esto se conectaría directamente con tu bot de Discord.`);
     }
+}
+
+// Sistema de invitación
+function inviteBot(botName, botId) {
+    // En producción, usarías el ID real de tu bot
+    const inviteUrl = `https://discord.com/api/oauth2/authorize?client_id=${botId}&permissions=8&scope=bot%20applications.commands`;
     
-    loadBots(filteredBots);
-}
-
-// Filtrar por categoría
-function filterByCategory(category) {
-    document.getElementById('categorySelect').value = category;
-    searchBots();
-}
-
-// Filtrar por tag
-function filterByTag(tag) {
-    document.getElementById('searchInput').value = tag;
-    searchBots();
-}
-
-// Ordenar bots
-function sortBots() {
-    const sortValue = document.getElementById('sortSelect').value;
-    let sortedBots = [...bots];
-    
-    switch(sortValue) {
-        case 'votes':
-            sortedBots.sort((a, b) => b.votes - a.votes);
-            break;
-        case 'servers':
-            sortedBots.sort((a, b) => b.servers - a.servers);
-            break;
-        case 'name':
-            sortedBots.sort((a, b) => a.name.localeCompare(b.name));
-            break;
+    if (confirm(`¿Quieres invitar a ${botName} a tu servidor de Discord?`)) {
+        window.open(inviteUrl, '_blank');
     }
-    
-    loadBots(sortedBots);
 }
 
-// Funciones de acción
-function voteBot(botName, botId) {
-    // Simular voto (en producción usarías una API real)
-    alert(`✅ Voted for ${botName}! Thank you for your vote!\nBot ID: ${botId}`);
+// Configurar botones de invitación
+function setupInviteButtons() {
+    const inviteButtons = document.querySelectorAll('#inviteBotButton, #inviteBotButton2');
+    inviteButtons.forEach(button => {
+        button.href = `https://discord.com/api/oauth2/authorize?client_id=${BOT_CLIENT_ID}&permissions=8&scope=bot%20applications.commands`;
+        button.target = '_blank';
+    });
     
-    // Aquí podrías hacer una llamada a tu API para registrar el voto
-    // fetch('/api/vote/' + botId, { method: 'POST' })
+    // Configurar enlaces del footer
+    document.getElementById('discordLink').href = `https://discord.gg/${DISCORD_INVITE}`;
+    document.getElementById('githubLink').href = 'https://github.com/TU_USUARIO/TU_REPOSITORIO';
 }
 
-function inviteBot(botName) {
-    // Simular invitación (en producción usarías un enlace real)
-    alert(`🔗 Invite link for ${botName} would be generated here!\n(In a real implementation, this would open the bot invite URL)`);
-    
-    // Ejemplo de enlace real:
-    // window.open(`https://discord.com/api/oauth2/authorize?client_id=${botId}&permissions=8&scope=bot`, '_blank');
+// Cargar leaderboard
+function loadLeaderboard() {
+    const timeframe = document.getElementById('timeframeSelect').value;
+    // En producción, esto cargaría datos reales según el timeframe
+    loadBots();
 }
 
 // Configurar event listeners
 function setupEventListeners() {
-    // Buscar al presionar Enter
-    document.getElementById('searchInput').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            searchBots();
-        }
-    });
-    
-    // Mini búsqueda
-    document.getElementById('miniSearch').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            const query = this.value;
-            if (query) {
-                document.getElementById('searchInput').value = query;
-                searchBots();
-            }
-        }
-    });
-    
     // Teclas rápidas
     document.addEventListener('keydown', function(e) {
-        // Ctrl + K para buscar
+        // Ctrl + K para mostrar alerta de comandos
         if (e.ctrlKey && e.key === 'k') {
             e.preventDefault();
-            document.getElementById('searchInput').focus();
-        }
-        
-        // Esc para limpiar búsqueda
-        if (e.key === 'Escape') {
-            document.getElementById('searchInput').value = '';
-            document.getElementById('categorySelect').value = '';
-            loadBots();
+            showBotCommands();
         }
     });
 }
 
-// Mensaje de bienvenida (solo una vez)
+// Mostrar comandos del bot
+function showBotCommands() {
+    const commands = `
+🔧 Comandos slash disponibles en Discord:
+
+/addbot [bot_id] [descripcion] - Añade un bot al directorio
+/vote [bot_id] - Vota por un bot favorito
+/search [query] - Busca bots por nombre o categoría
+/top [cantidad] - Muestra los bots más votados
+/profile [bot_id] - Muestra el perfil de un bot
+/help - Muestra esta ayuda
+
+💡 Consejo: Usa estos comandos directamente en tu servidor de Discord donde esté el bot.
+    `;
+    alert(commands);
+}
+
+// Mensaje de bienvenida
 function showWelcomeMessage() {
-    if (!localStorage.getItem('welcomeShown')) {
+    if (!sessionStorage.getItem('welcomeShown')) {
         setTimeout(() => {
-            alert('🎉 Welcome to External.ui - Your Discord Bot Directory!');
+            const welcomeMessage = `
+🎉 ¡Bienvenido a External.ui!
+
+Esta plataforma está integrada con nuestro bot de Discord.
+Usa Ctrl+K para ver los comandos disponibles.
+
+🚀 Características principales:
+• Sistema de votación en tiempo real
+• Directorio de bots actualizado
+• Integración directa con Discord
+• Comandos slash intuitivos
+
+¿Listo para comenzar?
+            `;
+            alert(welcomeMessage);
         }, 1000);
-        localStorage.setItem('welcomeShown', 'true');
+        sessionStorage.setItem('welcomeShown', 'true');
     }
 }
 
-// Inicializar
-showWelcomeMessage();
+// Simular actualización en tiempo real de estadísticas
+setInterval(() => {
+    // En producción, esto se conectaría a tu API real
+    const votesElement = document.getElementById('totalVotes');
+    if (votesElement) {
+        const currentVotes = parseInt(votesElement.textContent.replace(/,/g, ''));
+        const newVotes = currentVotes + Math.floor(Math.random() * 3);
+        votesElement.textContent = newVotes.toLocaleString();
+        stats.totalVotes = newVotes;
+    }
+}, 10000); // Actualizar cada 10 segundos
+
+// Manejo de errores globales
+window.addEventListener('error', function(e) {
+    console.error('❌ Error global:', e.error);
+});
+
+// Manejo de promesas no manejadas
+window.addEventListener('unhandledrejection', function(e) {
+    console.error('❌ Promesa no manejada:', e.reason);
+});

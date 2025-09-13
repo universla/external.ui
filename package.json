@@ -1,3 +1,4 @@
+
 {
   "name": "external-ui",
   "version": "1.0.0",
@@ -10,6 +11,6 @@
     "serve": "^14.2.0"
   },
   "engines": {
-    "node": "18.x"
+    "node": "20.x"
   }
 }
